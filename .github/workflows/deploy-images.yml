@@ -30,7 +30,6 @@ jobs:
             auth0_client_id: 'WH917SKYM44IYxub2lwDo8we8ORrpgIl'
             auth0_web_client_id: 'CL4ZKsUzNaS8s1F1Rh5dNflPqGhdhh7n'
             frontend_base_url: 'https://app.obstracts.staging.signalscorps.com'
-            smtp_username: 'app@brevo.app.obstracts.staging.signalscorps.com'
             csrf_trusted_origins: 'https://management.obstracts.staging.signalscorps.com'
             default_stripe_price_id: price_1QPAjWCl5fFMWEhTN4p4P6N2
             stripe_public_key:
@@ -43,7 +42,6 @@ jobs:
             auth0_client_id: 'nGpXXDli5rahMby50wVcbJZ474Tw9jsT'
             auth0_web_client_id: 'l0NalKex2IMpjNji2lNCa3moPDegDgRM'
             frontend_base_url: 'https://app.obstracts.com'
-            smtp_username: 'app@brevo.obstracts.com'
             csrf_trusted_origins: 'https://management.obstracts.com'
             default_stripe_price_id: price_1QRtxaCl5fFMWEhTxYUy4B4A
             stripe_public_key: 
