@@ -35,15 +35,15 @@ ENV STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
 ENV STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
 ENV DEFAULT_STRIPE_PRICE_ID=${DEFAULT_STRIPE_PRICE_ID}
 
-ENV REDIS_URL='redis://host.docker.internal:6379/1'
-ENV REDIS_CACHE_URL='redis://host.docker.internal:6379/2'
-ENV SMTP_USERNAME='731598001@smtp-brevo.com'
-ENV SMTP_SERVER='smtp-relay.brevo.com'
+ENV REDIS_URL=redis://host.docker.internal:6379/1
+ENV REDIS_CACHE_URL=redis://host.docker.internal:6379/2
+ENV SMTP_USERNAME=731598001@smtp-brevo.com
+ENV SMTP_SERVER=smtp-relay.brevo.com
 ENV SMTP_PORT=587
 ENV USE_SSL=TRUE
 ENV POSTGRES_USER=obstracts_web_be
-ENV POSTGRES_DB='obstracts_web_database'
-ENV POSTGRES_HOST='host.docker.internal'
+ENV POSTGRES_DB=obstracts_web_database
+ENV POSTGRES_HOST=host.docker.internal
 ENV POSTGRES_PORT=5432
 
 # Set working directory
