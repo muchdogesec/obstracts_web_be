@@ -32,7 +32,7 @@ jobs:
             frontend_base_url: 'https://app.obstracts.staging.signalscorps.com'
             csrf_trusted_origins: 'https://management.obstracts.staging.signalscorps.com'
             default_stripe_price_id: price_1QPAjWCl5fFMWEhTN4p4P6N2
-            stripe_public_key: key
+            stripe_public_key: 'pk_test_51QHPQhCl5fFMWEhT6nAn4G1sZoyYGSNe97vsGHRwVnrkUfUoIGdzj0OZKcMOPkQKApC4sSLOPJzaopjAhAgwVtqw00EiKqIvqh'
             stripe_live_mode: false
           - name: production
             branch: refs/heads/main
@@ -45,7 +45,7 @@ jobs:
             frontend_base_url: 'https://app.obstracts.com'
             csrf_trusted_origins: 'https://management.obstracts.com'
             default_stripe_price_id: price_1QRtxaCl5fFMWEhTxYUy4B4A
-            stripe_public_key: key
+            stripe_public_key: 'pk_live_51QHPQhCl5fFMWEhT8HuBIcZ0NP1BSwOW2IPkuvWKeoQoC6Jn0roexBsygvj5TAKe1TBg6bq4RWSSGqwe5WojfCo900hYmyGCzC'
             stripe_live_mode: true
     steps:
       - name: Checkout repository
