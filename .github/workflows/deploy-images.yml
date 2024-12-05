@@ -82,8 +82,6 @@ jobs:
             STRIPE_TEST_SECRET_KEY=${{ secrets.STRIPE_TEST_SECRET_KEY }}
             STRIPE_PUBLIC_KEY=${{ matrix.environment.stripe_public_key }}
             CSRF_TRUSTED_ORIGINS=${{ matrix.environment.csrf_trusted_origins }}
-            REDIS_URL=${{ secrets.REDIS_URL }}
-            REDIS_CACHE_URL=${{ secrets.REDIS_CACHE_URL }}
             POSTGRES_PASSWORD=$${{ secrets.POSTGRES_PASSWORD }}
             DEFAULT_STRIPE_PRICE_ID=${{ matrix.environment.default_stripe_price_id }}
       - name: Generate artifact attestation
