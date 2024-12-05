@@ -438,14 +438,19 @@ GOOGLE_ANALYTICS_ID = env("GOOGLE_ANALYTICS_ID", default="")
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
 # Note: don"t edit these values here - edit them in your .env file or environment variables!
 # The defaults are provided to prevent crashes if your keys don"t match the expected format.
-STRIPE_LIVE_PUBLIC_KEY = env("STRIPE_LIVE_PUBLIC_KEY", default="pk_live_***")
-STRIPE_LIVE_SECRET_KEY = env("STRIPE_LIVE_SECRET_KEY", default="sk_live_***")
-STRIPE_TEST_PUBLIC_KEY = env("STRIPE_TEST_PUBLIC_KEY", default="pk_test_***")
-STRIPE_TEST_SECRET_KEY = env("STRIPE_TEST_SECRET_KEY", default="sk_test_***")
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="pk_test_***")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="sk_test_***")
 DEFAULT_STRIPE_PRICE_ID = env("DEFAULT_STRIPE_PRICE_ID", default="***")
 
 # Change to True in production
 STRIPE_LIVE_MODE = env.bool("STRIPE_LIVE_MODE", False)
+
+if STRIPE_LIVE_MODE:
+    STRIPE_LIVE_PUBLIC_KEY = STRIPE_PUBLIC_KEY
+    STRIPE_LIVE_PUBLIC_KEY = STRIPE_SECRET_KEY
+else:
+    STRIPE_TEST_PUBLIC_KEY = STRIPE_PUBLIC_KEY
+    STRIPE_TEST_SECRET_KEY = STRIPE_SECRET_KEY
 
 API_KEY_CUSTOM_HEADER = "HTTP_API_KEY"
 # djstripe settings
