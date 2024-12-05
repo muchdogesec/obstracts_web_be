@@ -5,7 +5,7 @@ description: This workflow builds and pushes Docker images for staging and produ
 on:
   push:
     branches:
-      - main
+      - debug-build
 
 env:
   REGISTRY: ghcr.io
@@ -59,6 +59,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.environment.image_suffix }}
+      - name: Debug Image Name
+        run: echo ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.environment.image_suffix }}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
