@@ -68,26 +68,18 @@ jobs:
           context: .
           file: ./Dockerfile.deploy
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/muchdogesec/obstracts_web_be_web_staging:latest
           labels: ${{ steps.meta.outputs.labels }}
           visibility: private
           build-args: |
-            AUTH0_LOGIN_DOMAIN=${{ matrix.environment.auth0_login_domain }}
-            AUTH0_DOMAIN=${{ matrix.environment.auth0_domain }}
-            AUTH0_CLIENT_ID=${{ matrix.environment.auth0_client_id }}
-            AUTH0_WEB_CLIENT_ID=${{ matrix.environment.auth0_web_client_id }}
-            AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}
-            AUTH0_WEB_CLIENT_SECRET=${{ secrets.AUTH0_WEB_CLIENT_SECRET }}
-            FRONTEND_BASE_URL=${{ matrix.environment.frontend_base_url }}
-            SMTP_USERNAME=${{ matrix.environment.smtp_username }}
-            SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
-            STRIPE_TEST_SECRET_KEY=${{ secrets.STRIPE_TEST_SECRET_KEY }}
-            STRIPE_TEST_PUBLIC_KEY=${{ secrets.STRIPE_TEST_PUBLIC_KEY }}
-            CSRF_TRUSTED_ORIGINS=${{ matrix.environment.csrf_trusted_origins }}
-            REDIS_URL=${{ secrets.REDIS_URL }}
-            REDIS_CACHE_URL=${{ secrets.REDIS_CACHE_URL }}
-            POSTGRES_PASSWORD=$${{ secrets.POSTGRES_PASSWORD }}
-            DEFAULT_STRIPE_PRICE_ID=${{ matrix.environment.default_stripe_price_id }}
+            AUTH0_LOGIN_DOMAIN=dogesec-staging.eu.auth0.com
+            AUTH0_DOMAIN=dogesec-staging.eu.auth0.com
+            AUTH0_CLIENT_ID=WH917SKYM44IYxub2lwDo8we8ORrpgIl
+            AUTH0_WEB_CLIENT_ID=CL4ZKsUzNaS8s1F1Rh5dNflPqGhdhh7n
+            FRONTEND_BASE_URL=https://app.obstracts.staging.signalscorps.com
+            SMTP_USERNAME=app@brevo.app.obstracts.staging.signalscorps.com
+            CSRF_TRUSTED_ORIGINS=https://management.obstracts.staging.signalscorps.com
+            DEFAULT_STRIPE_PRICE_ID=price_1QPAjWCl5fFMWEhTN4p4P6N2
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
