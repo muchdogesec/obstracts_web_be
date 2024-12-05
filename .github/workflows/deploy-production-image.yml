@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}_web_production
+  IMAGE_NAME: ${{ github.repository }}_obstracts_web_production
 
 jobs:
   build-and-push-image:
