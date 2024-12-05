@@ -50,7 +50,7 @@ jobs:
             FRONTEND_BASE_URL='https://app.obstracts.com'
             SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
             CSRF_TRUSTED_ORIGINS='https://management.obstracts.com'
-            POSTGRES_PASSWORD=$${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             STRIPE_LIVE_MODE=true
             STRIPE_PUBLIC_KEY='pk_live_51QHPQhCl5fFMWEhT8HuBIcZ0NP1BSwOW2IPkuvWKeoQoC6Jn0roexBsygvj5TAKe1TBg6bq4RWSSGqwe5WojfCo900hYmyGCzC'
             STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}

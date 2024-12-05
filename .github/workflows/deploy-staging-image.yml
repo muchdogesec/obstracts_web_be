@@ -50,7 +50,7 @@ jobs:
             FRONTEND_BASE_URL='https://app.obstracts.staging.signalscorps.com'
             SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
             CSRF_TRUSTED_ORIGINS='https://management.obstracts.staging.signalscorps.com'
-            POSTGRES_PASSWORD=$${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             STRIPE_LIVE_MODE=false
             STRIPE_PUBLIC_KEY='pk_test_51QHPQhCl5fFMWEhT6nAn4G1sZoyYGSNe97vsGHRwVnrkUfUoIGdzj0OZKcMOPkQKApC4sSLOPJzaopjAhAgwVtqw00EiKqIvqh'
             STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
