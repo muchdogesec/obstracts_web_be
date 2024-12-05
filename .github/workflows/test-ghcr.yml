@@ -1,7 +1,9 @@
 name: Test GHCR Access
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - debug-build
 
 jobs:
   test-ghcr:
