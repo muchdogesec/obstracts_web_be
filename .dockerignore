@@ -1,0 +1,7 @@
+media
+static_root
+node_modules
+npm-debug.log
+**/.env
+.direnv
+.pytest_cache

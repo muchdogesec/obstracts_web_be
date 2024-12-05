@@ -1,0 +1,32 @@
+# syntax = docker/dockerfile:1.5
+FROM python:3.11-bookworm
+ENV PYTHONUNBUFFERED=1
+
+# install node/npm
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    echo "deb https://deb.nodesource.com/node_20.x bookworm main" > /etc/apt/sources.list.d/nodesource.list && \
+    wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    apt-get update && \
+    apt-get install -yqq nodejs \
+    # install gettext for translations
+    gettext
+
+# create code directory
+RUN mkdir /code
+WORKDIR /code
+
+# install python requirements
+RUN pip install --upgrade pip
+
+# copy just requirements and install before rest of code to avoid having to
+# reinstall packages during build every time code changes
+COPY requirements.txt requirements.txt
+COPY dev-requirements.txt dev-requirements.txt
+COPY requirements requirements/
+RUN --mount=type=cache,target=/root/.cache \
+    pip install -r requirements.txt
+
+# copy code files
+COPY . /code/

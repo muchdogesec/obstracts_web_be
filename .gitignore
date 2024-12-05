@@ -1,0 +1,35 @@
+.idea
+*.pyc
+*~
+db.sqlite3
+.sass-cache/
+celerybeat-schedule
+obstracts_web/localsettings.py
+obstracts_web/local.py
+static_root/
+node_modules/
+openapitools.json
+media/
+docs/_build
+obstracts/
+history4feed/
+_dist/
+.env
+*.env
+.env.production
+.DS_Store
+.direnv
+.envrc
+.vscode
+.ruff_cache
+
+# uncomment these lines after setting up the front-end build pipeline in dev and production
+# static/css/
+# static/js/
+venv/*
+venv
+static/*
+
+docker-data/*
+
+templates/obstracts_api/schema.json 

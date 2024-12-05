@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 150  
+exclude = .git,__pycache__,migrations,static,templates,venves. venv, obstract_web_fe
+# Ignore specific warnings and errors if necessary:
+# E203 and W503 are commonly ignored as they conflict with black.
+# F405 can be ignored if you are using wildcard imports in Django settings.
+extend-ignore = E203, W503
+max-complexity = 20
