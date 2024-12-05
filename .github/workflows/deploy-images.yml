@@ -24,7 +24,7 @@ jobs:
           - name: staging
             branch: refs/heads/main
             environment: obstracts_web_staging
-            image_suffix: _web_staging
+            image_suffix: _obstracts_web_staging
             auth0_domain: 'dogesec-staging.eu.auth0.com'
             auth0_login_domain: 'auth.signalscorps.com'
             auth0_client_id: 'WH917SKYM44IYxub2lwDo8we8ORrpgIl'
@@ -36,7 +36,7 @@ jobs:
           - name: production
             branch: refs/heads/main
             environment: obstracts_web_production
-            image_suffix: _web_production
+            image_suffix: _obstracts_web_production
             auth0_domain: 'dogesec-production.eu.auth0.com'
             auth0_login_domain: 'auth.dogesec.com'
             auth0_client_id: 'nGpXXDli5rahMby50wVcbJZ474Tw9jsT'
@@ -59,6 +59,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.environment.image_suffix }}
+      - name: Debug Image Name
+        run: echo ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.environment.image_suffix }}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
