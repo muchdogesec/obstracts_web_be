@@ -33,6 +33,7 @@ jobs:
             smtp_username: 'app@brevo.app.obstracts.staging.signalscorps.com'
             csrf_trusted_origins: 'https://management.obstracts.staging.signalscorps.com'
             default_stripe_price_id: price_1QPAjWCl5fFMWEhTN4p4P6N2
+            stripe_public_key:
           - name: production
             branch: refs/heads/main
             environment: obstracts_web_production
@@ -45,6 +46,7 @@ jobs:
             smtp_username: 'app@brevo.obstracts.com'
             csrf_trusted_origins: 'https://management.obstracts.com'
             default_stripe_price_id: price_1QRtxaCl5fFMWEhTxYUy4B4A
+            stripe_public_key: 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -80,7 +82,7 @@ jobs:
             SMTP_USERNAME=${{ matrix.environment.smtp_username }}
             SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
             STRIPE_TEST_SECRET_KEY=${{ secrets.STRIPE_TEST_SECRET_KEY }}
-            STRIPE_TEST_PUBLIC_KEY=${{ secrets.STRIPE_TEST_PUBLIC_KEY }}
+            STRIPE_PUBLIC_KEY=${{ matrix.environment.stripe_public_key }}
             CSRF_TRUSTED_ORIGINS=${{ matrix.environment.csrf_trusted_origins }}
             REDIS_URL=${{ secrets.REDIS_URL }}
             REDIS_CACHE_URL=${{ secrets.REDIS_CACHE_URL }}
