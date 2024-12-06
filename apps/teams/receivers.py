@@ -39,7 +39,9 @@ def handle_subscription_pre_save(sender, signal, instance, **kwargs):
 
 @receiver(pre_save, sender=Product)
 def handle_product_pre_save(sender, signal, instance, **kwargs):
-    old_product = Product.objects.get(id=instance.id)
+    old_product = Product.objects.filter(id=instance.id).first()
+    if not old_product:
+        return
     save_product_allowed_feeds_value(old_product.id, old_product.metadata.get('allowed_api_access'))
 
 @receiver(post_save, sender=Product)
@@ -47,6 +49,8 @@ def handle_product_post_save(sender, signal, instance, **kwargs):
     if instance.metadata.get('allowed_api_access') == 'true':
         return
     old_value = get_product_allowed_feeds_value(instance.id)
+    if not old_value:
+        return
     allowed_api_access = instance.metadata.get('allowed_api_access')
     if allowed_api_access == 'true':
         return
