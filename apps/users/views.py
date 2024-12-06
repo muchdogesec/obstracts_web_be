@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework import status, viewsets
 from django.conf import settings
 from allauth.account.utils import send_email_confirmation
-
+import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -294,7 +294,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
                 user_id, {"app_metadata": {"mfa_enabled": True}}, auth0_token
             )
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error("Error updating Auth0 user: %s", str(e))
+            return Response({"detail": "An internal error has occurred."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "OTP verified successfully"}, status=status.HTTP_200_OK
@@ -311,7 +312,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
                 user_id, {"app_metadata": {"mfa_enabled": False}}, auth0_token
             )
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error("Error updating Auth0 user: %s", str(e))
+            return Response({"detail": "An internal error has occurred."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "OTP disabled successfully"}, status=status.HTTP_200_OK
