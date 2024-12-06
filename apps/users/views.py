@@ -1,4 +1,5 @@
 import requests
+import logging
 import pyotp
 from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import action
@@ -339,7 +340,8 @@ class UserAdminManagementViewSet(viewsets.GenericViewSet, ListModelMixin):
         try:
             make_user_staff_on_auth0(user.id)
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"Error making user staff on Auth0: {e}")
+            return Response({"detail": "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         CustomUser.objects.filter(id=user.id).update(is_staff=True, is_superuser=True)
 
@@ -361,7 +363,8 @@ class UserAdminManagementViewSet(viewsets.GenericViewSet, ListModelMixin):
         try:
             remove_user_from_staff_on_auth0(user.id)
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"Error removing user from staff on Auth0: {e}")
+            return Response({"detail": "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         CustomUser.objects.filter(id=user.id).update(is_staff=False, is_superuser=False)
         return Response(
