@@ -22,7 +22,7 @@ cryptography==43.0.1
 distlib==0.3.8
 dj-rest-auth==6.0.0
 dj-stripe==2.8.4
-Django==5.1.1
+Django==5.1.4
 django-allauth==64.1.0
 django-anymail==11.1
 django-celery-beat==2.7.0
