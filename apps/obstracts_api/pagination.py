@@ -18,10 +18,10 @@ class CustomPagination(PageNumberPagination):
         try:
             self.page = paginator.page(page_number)
         except InvalidPage as exc:
-            msg = self.invalid_page_message.format(
-                page_number=page_number, message=str(exc)
-            )
-            raise NotFound(msg)
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Invalid page request: {exc}")
+            raise NotFound("Invalid page number.")
 
         if paginator.num_pages > 1 and self.template is not None:
             # The browsable API should display pagination controls.
