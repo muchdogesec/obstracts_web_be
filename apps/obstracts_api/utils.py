@@ -12,6 +12,7 @@ def get_obstracts_job(feed_id, job_id):
     response.raise_for_status()
     return response.json()
 
+
 def create_obstracts_feed(
     profile_id,
     url,
@@ -32,7 +33,7 @@ def create_obstracts_feed(
         OBSTRACT_SERVICE_API + "/feeds/",
         json=data,
     )
-    if(response.status_code == 400):
+    if (response.status_code == 400):
         raise ValidationError(response.json())
     response.raise_for_status()
     return response.json()
@@ -54,7 +55,7 @@ def create_obstracts_skeleton_feed(
         OBSTRACT_SERVICE_API + "/feeds/skeleton/",
         json=data,
     )
-    if(response.status_code == 400):
+    if (response.status_code == 400):
         raise ValidationError(response.json())
     response.raise_for_status()
     return response.json()
@@ -63,10 +64,12 @@ def create_obstracts_skeleton_feed(
 def delete_obstracts_feed(feed_id):
     return requests.delete(f"{OBSTRACT_SERVICE_API}/feeds/{feed_id}/")
 
+
 def get_obstracts_feed(feed_id):
     url = f"{OBSTRACT_SERVICE_API}/feeds/{feed_id}/"
     print(url)
     return requests.get(url).json()
+
 
 def init_reload_feed(profile_id, feed_id):
     data = {
@@ -79,6 +82,7 @@ def init_reload_feed(profile_id, feed_id):
     )
     response.raise_for_status()
     return response.json()
+
 
 def get_post_for_report_object(object):
     external_references = object['external_references']
@@ -112,3 +116,28 @@ def get_posts_by_extractions(object_id, page):
         feed_id_dict[feed_id] = True
         posts.append(post)
     return posts, feed_id_dict.keys(), response.json()
+
+
+def get_latest_posts(feed_ids, sort, title, page):
+    if feed_ids == []:
+        return {
+            "page_size": 10,
+            "page_number": 1,
+            "page_results_count": 0,
+            "total_results_count": 0,
+            "posts": [],
+        }
+    
+    response = requests.get(
+        OBSTRACT_SERVICE_API + f"/posts/",
+        params={
+            "feed_id": feed_ids,
+            "page": page,
+            "page_size": 10,
+            "title": title,
+            "sort": sort,
+        }
+    )
+    response.raise_for_status()
+    response_data = response.json()
+    return response_data

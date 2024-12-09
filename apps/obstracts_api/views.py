@@ -40,7 +40,7 @@ from .serializers import (
     FeedWithSubscriptionSerializer,
     SubscribeFeedSerializer,
 )
-from .utils import delete_obstracts_feed, get_posts_by_extractions
+from .utils import delete_obstracts_feed, get_posts_by_extractions, get_latest_posts
 
 
 class ProxyView(APIView):
@@ -294,6 +294,27 @@ class TeamFeedViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     #
     #     serializer = self.get_serializer(queryset, many=True)
     #     return Response(serializer.data)
+
+
+class LatestPostView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    
+    def list(self, *args, **kwargs):
+        team_id = kwargs.get("team_id")
+        page = self.request.query_params.get("page")
+        title = self.request.query_params.get("title")
+        sort = self.request.query_params.get("sort", "pubdate_descending")
+        feeds = []
+        feed_ids = None
+        if team_id:
+            feeds = FeedSubsription.objects.filter(team_id=team_id)
+            feed_ids = [feed.feed_id for feed in feeds]
+        else:
+            if not self.request.user.is_staff:
+                raise PermissionDenied()
+        
+        response = get_latest_posts(feed_ids, sort, title, page)
+        return Response(response)
 
 
 class PostsByExtractionView(ListAPIView):
