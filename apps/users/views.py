@@ -1,4 +1,5 @@
 import requests
+import logging
 import pyotp
 from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import action
@@ -136,7 +137,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
             try:
                 update_auth0_user(user_id, {"email": email}, auth0_token)
             except requests.RequestException as e:
-                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                logging.error(f"An error occurred: {e}")
+                return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
             # Update email locally
             request.user.email = email
@@ -145,10 +147,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
             try:
                 self.send_verification_email(user_id, auth0_token)
             except requests.RequestException as e:
-                return Response(
-                    {"detail": "Verification email failed", "error": str(e)},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                logging.error(f"An error occurred: {e}")
+                return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
             return Response(
                 {"detail": "Email updated successfully"}, status=status.HTTP_200_OK
@@ -171,10 +171,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
         try:
             self.send_verification_email(user_id, auth0_token)
         except requests.RequestException as e:
-            return Response(
-                {"detail": "Verification email failed", "error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "Verification email sent successfully"},
@@ -191,10 +189,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
         try:
             self.send_verification_email(user_id, auth0_token)
         except requests.RequestException as e:
-            return Response(
-                {"detail": "Verification email failed", "error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "Verification email sent successfully"},
@@ -294,7 +290,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
                 user_id, {"app_metadata": {"mfa_enabled": True}}, auth0_token
             )
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "OTP verified successfully"}, status=status.HTTP_200_OK
@@ -311,7 +308,8 @@ class UserManagementViewSet(viewsets.GenericViewSet):
                 user_id, {"app_metadata": {"mfa_enabled": False}}, auth0_token
             )
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {"detail": "OTP disabled successfully"}, status=status.HTTP_200_OK
@@ -326,7 +324,6 @@ class UserAdminManagementViewSet(viewsets.GenericViewSet, ListModelMixin):
     ordering = ['email']
     permission_classes = (IsAdminUser,)
 
-
     def get_queryset(self):
         return CustomUser.objects.prefetch_related("membership_set__team")
 
@@ -339,10 +336,10 @@ class UserAdminManagementViewSet(viewsets.GenericViewSet, ListModelMixin):
         try:
             make_user_staff_on_auth0(user.id)
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         CustomUser.objects.filter(id=user.id).update(is_staff=True, is_superuser=True)
-
 
         return Response(
             {
@@ -361,7 +358,8 @@ class UserAdminManagementViewSet(viewsets.GenericViewSet, ListModelMixin):
         try:
             remove_user_from_staff_on_auth0(user.id)
         except requests.RequestException as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
 
         CustomUser.objects.filter(id=user.id).update(is_staff=False, is_superuser=False)
         return Response(

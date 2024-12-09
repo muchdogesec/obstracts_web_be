@@ -42,11 +42,10 @@ team_urlpatterns = [
     path("", include(web_team_urls)),
     path("subscription/", include(subscriptions_team_urls)),
     path("team/", include(single_team_urls)),
-    path("example/", include("apps.teams_example.urls")),
 ]
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="/admin")),
+    path("", RedirectView.as_view(url="/admin"), name='home'),
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     # redirect Django admin login to main login page
     path("admin/login/", RedirectView.as_view(pattern_name="auth0_login")),

@@ -10,7 +10,6 @@ app_name = "subscriptions"
 
 
 router = routers.DefaultRouter()
-router.register("api/plans", views.SubscriptionProductViewSet, basename="plans")
 
 urlpatterns = router.urls
 
