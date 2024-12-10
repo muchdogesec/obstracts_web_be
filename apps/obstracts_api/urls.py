@@ -3,7 +3,17 @@ from rest_framework import routers
 from drf_spectacular.views import SpectacularSwaggerView
 
 from .schema import SchemaView
-from .views import ProxyView, FeedViewSet, FeedProxyView, TeamFeedProxyView, TeamFeedViewSet, OpenFeedProxyView, TeamTokenFeedViewSet, PostsByExtractionView
+from .views import (
+    ProxyView,
+    FeedViewSet,
+    FeedProxyView,
+    TeamFeedProxyView,
+    TeamFeedViewSet,
+    OpenFeedProxyView,
+    TeamTokenFeedViewSet,
+    PostsByExtractionView,
+    LatestPostView,
+)
 
 
 router = routers.DefaultRouter()
@@ -40,5 +50,13 @@ urlpatterns = router.urls + [
     path(
         "teams/<uuid:team_id>/objects/<str:object_id>/",
         PostsByExtractionView.as_view(),
+    ),
+    path(
+        "posts/",
+        LatestPostView.as_view(),
+    ),
+    path(
+        "teams/<uuid:team_id>/posts/",
+        LatestPostView.as_view(),
     ),
 ]
