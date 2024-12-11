@@ -30,7 +30,7 @@ SECRET_KEY = env(
 )
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=True)
+DEBUG = env.bool("DJANGO_DEBUG", default=True)
 ENABLE_DEBUG_TOOLBAR = (
     env.bool("ENABLE_DEBUG_TOOLBAR", default=False) and "test" not in sys.argv
 )
