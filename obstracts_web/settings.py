@@ -439,7 +439,6 @@ GOOGLE_ANALYTICS_ID = env("GOOGLE_ANALYTICS_ID", default="")
 # The defaults are provided to prevent crashes if your keys don"t match the expected format.
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="pk_test_***")
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="sk_test_***")
-DEFAULT_STRIPE_PRICE_ID = env("DEFAULT_STRIPE_PRICE_ID", default="***")
 
 # Change to True in production
 STRIPE_LIVE_MODE = env.bool("STRIPE_LIVE_MODE", False)

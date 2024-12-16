@@ -104,10 +104,14 @@ class SubscriptionConfig(models.Model):
     @staticmethod
     def get_trial_duration():
         data_dict = {}
-        for item in SubscriptionConfig.objects.all():
+        for item in SubscriptionConfig.objects.filter(key__icontains='subscription_trial_duration'):
             data_dict[item.key] = item.value
         return timedelta(
             days=int(data_dict.get('subscription_trial_duration_days', 0)),
             hours=int(data_dict.get('subscription_trial_duration_hours', 0)),
             minutes=int(data_dict.get('subscription_trial_duration_minutes', 0)),
         )
+
+    @staticmethod
+    def get_default_price_id():
+        return SubscriptionConfig.objects.get(key='subscription_default_price').value
