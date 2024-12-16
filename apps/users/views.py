@@ -5,7 +5,7 @@ from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework import status, viewsets
 from django.conf import settings
 from allauth.account.utils import send_email_confirmation
@@ -119,6 +119,54 @@ def revoke_api_key(request):
     return HttpResponseRedirect(reverse("users:user_profile"))
 
 
+class EmailManagementViewSet(viewsets.GenericViewSet):
+    permission_classes = [AllowAny]
+    """User management ViewSet for handling email, password, and OTP changes"""
+
+
+    def send_verification_email(self, user_id, auth0_token):
+        """Helper function to send a verification email"""
+        verification_url = (
+            f"https://{settings.AUTH0_DOMAIN}/api/v2/jobs/verification-email"
+        )
+        headers = get_auth0_headers(auth0_token)
+        provider, identity_user_id = user_id.split("|")
+        response = requests.post(
+            verification_url,
+            json={
+                "user_id": user_id,
+                "client_id": settings.AUTH0_CLIENT_ID,
+                "identity": {"user_id": identity_user_id, "provider": provider},
+            },
+            headers=headers,
+        )
+        response.raise_for_status()
+
+    @action(detail=False, methods=["post"], url_path="resend-verification-email")
+    def resend_verification_email(self, request):
+        serializer = ChangeEmailSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        email = serializer.validated_data["email"]
+        auth0_account = SocialAccount.objects.get(user__email=email)
+        if not auth0_account:
+            return Response({"detail": "Verification email sent successfully"})
+        user_id = auth0_account.uid
+
+        # Get Auth0 management token
+        auth0_token = get_auth0_management_token()
+        try:
+            self.send_verification_email(user_id, auth0_token)
+        except requests.RequestException as e:
+            logging.error(f"An error occurred: {e}")
+            return Response({"detail":  "An error occurred while processing your request."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+            {"detail": "Verification email sent successfully"},
+            status=status.HTTP_200_OK,
+        )
+
+
 class UserManagementViewSet(viewsets.GenericViewSet):
     """User management ViewSet for handling email, password, and OTP changes"""
 
@@ -204,7 +252,6 @@ class UserManagementViewSet(viewsets.GenericViewSet):
         )
         headers = get_auth0_headers(auth0_token)
         provider, identity_user_id = user_id.split("|")
-        print(provider, identity_user_id)
         response = requests.post(
             verification_url,
             json={
