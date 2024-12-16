@@ -195,7 +195,7 @@ def cancel_subscription(subscription_id: str):
         Subscription.sync_from_stripe_data(subscription)
 
 def subscribe_team_to_initial_subscription(subscription_holder):
-    default_price_id = settings.DEFAULT_STRIPE_PRICE_ID
+    default_price_id = SubscriptionConfig.get_default_price_id()
     stripe = get_stripe_module()
     customer = stripe.Customer.create(
         email=subscription_holder.owner.email,

@@ -55,7 +55,6 @@ jobs:
             STRIPE_LIVE_MODE=false
             STRIPE_PUBLIC_KEY=pk_test_51QHPQhCl5fFMWEhT6nAn4G1sZoyYGSNe97vsGHRwVnrkUfUoIGdzj0OZKcMOPkQKApC4sSLOPJzaopjAhAgwVtqw00EiKqIvqh
             STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-            DEFAULT_STRIPE_PRICE_ID=price_1QPAjWCl5fFMWEhTN4p4P6N2
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
