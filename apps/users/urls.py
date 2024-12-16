@@ -10,6 +10,9 @@ router.register(
     "user-management", views.UserManagementViewSet, basename="user-management"
 )
 router.register(
+    "email", views.EmailManagementViewSet, basename="email-management"
+)
+router.register(
     "admin-user-management",
     views.UserAdminManagementViewSet,
     basename="admin-user-management",
