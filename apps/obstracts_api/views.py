@@ -310,7 +310,7 @@ class LatestPostView(ListAPIView):
             subscriptions = FeedSubsription.objects.filter(team_id=team_id).select_related('feed')
             feed_ids = [subscription.feed_id for subscription in subscriptions]
             for subscription in subscriptions:
-                feed_title_dict[subscription.feed_id] = subscription.feed.obstract_feed_metadata.get('title')
+                feed_title_dict[str(subscription.feed_id)] = subscription.feed.obstract_feed_metadata.get('title')
         else:
             if not self.request.user.is_staff:
                 raise PermissionDenied()
@@ -320,7 +320,7 @@ class LatestPostView(ListAPIView):
             post_feed_ids = [post['feed_id'] for post in posts]
             feeds = Feed.objects.filter(id__in=post_feed_ids)
             for feed in feeds:
-                feed_title_dict[feed_id] = feed.obstract_feed_metadata.get('title')
+                feed_title_dict[str(feed.id)] = feed.obstract_feed_metadata.get('title')
         for post in posts:
             post['feed_title'] = feed_title_dict.get(post['feed_id'])
         return Response(response)
