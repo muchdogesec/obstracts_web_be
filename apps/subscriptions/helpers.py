@@ -151,20 +151,13 @@ def _get_quantity(stripe_price_id, subscription_holder):
     return subscription_holder.get_quantity()
 
 
-def create_stripe_portal_session(subscription_holder: Team) -> BillingPortalSession:
+def create_stripe_portal_session(team: Team) -> BillingPortalSession:
     stripe = get_stripe_module()
-    if (
-        not subscription_holder.subscription
-        or not subscription_holder.subscription.customer
-    ):
-        raise SubscriptionConfigError(
-            _("Whoops, we couldn't find a subscription associated with your account!")
-        )
-    customer_id = subscription_holder.subscription.customer.id
+    customer_id = team.customer.id
 
     portal_session = stripe.billing_portal.Session.create(
         customer=customer_id,
-        return_url=f"{settings.FRONTEND_BASE_URL}/teams/{subscription_holder.id}",
+        return_url=f"{settings.FRONTEND_BASE_URL}/teams/{team.id}",
     )
     return portal_session
 
