@@ -18,7 +18,7 @@ click==8.1.7
     #   pip-tools
 distlib==0.3.8
     # via virtualenv
-django==5.1.1
+django==5.1.4
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
