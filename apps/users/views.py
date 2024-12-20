@@ -148,13 +148,22 @@ class EmailManagementViewSet(viewsets.GenericViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         email = serializer.validated_data["email"]
-        auth0_account = SocialAccount.objects.get(user__email=email)
-        if not auth0_account:
-            return Response({"detail": "Verification email sent successfully"})
-        user_id = auth0_account.uid
 
         # Get Auth0 management token
         auth0_token = get_auth0_management_token()
+        headers = get_auth0_headers(auth0_token)
+        
+        response = requests.get(
+            f"https://{settings.AUTH0_DOMAIN}/api/v2/users-by-email",
+            params={'email': email},
+            headers=headers,
+        )
+        user_json  = response.json()
+        if len(user_json) == 0:
+            return Response({"detail": "Verification email sent successfully"})
+
+        user_id = user_json[0]['user_id']
+
         try:
             self.send_verification_email(user_id, auth0_token)
         except requests.RequestException as e:
