@@ -17,3 +17,4 @@ celery-progress
 celery
 celery[redis]
 django-celery-beat
+https://github.com/muchdogesec/arango_taxii_server/releases/download/v0.0.1-pre/arango_taxii_server-0.0.1-py3-none-any.whl

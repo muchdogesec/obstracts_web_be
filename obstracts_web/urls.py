@@ -53,6 +53,7 @@ urlpatterns = [
     path('obstracts_api/', include('apps.obstracts_api.urls')),
     path("team-management/<str:team_id>/", include(team_urlpatterns)),
     path("accounts/", include("allauth.urls")),
+    path("taxii_server/", include('arango_taxii_server.app.urls')),
     path("users/", include("apps.users.urls")),
     path("subscriptions/", include("apps.subscriptions.urls")),
     path("teams/", include("apps.teams.urls")),
