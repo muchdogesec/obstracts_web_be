@@ -96,3 +96,4 @@ virtualenv==20.26.3
 wcwidth==0.2.13
 wheel==0.44.0
 wrapt==1.16.0
+https://github.com/muchdogesec/arango_taxii_server/releases/download/v0.0.1-pre/arango_taxii_server-0.0.1-py3-none-any.whl

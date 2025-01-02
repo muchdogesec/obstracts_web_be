@@ -59,7 +59,7 @@ virtualenv==20.26.3
     # via pre-commit
 wheel==0.44.0
     # via pip-tools
-
+https://github.com/muchdogesec/arango_taxii_server/releases/download/v0.0.1-pre/arango_taxii_server-0.0.1-py3-none-any.whl
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
