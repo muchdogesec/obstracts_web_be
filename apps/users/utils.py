@@ -36,7 +36,7 @@ def get_auth0_management_token():
 
     if not token:
         token = _get_auth0_management_token()
-        cache.set('user__auth0_management_token', token, timeout=3600)
+        cache.set('user__auth0_management_token', token, timeout=10800)
 
     return token
 

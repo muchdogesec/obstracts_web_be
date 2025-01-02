@@ -207,4 +207,5 @@ def subscribe_team_to_initial_subscription(subscription_holder):
     )
     djstripe_subscription = Subscription.sync_from_stripe_data(subscription)
     subscription_holder.subscription = djstripe_subscription
+    subscription_holder.customer = djstripe_subscription.customer
     subscription_holder.save()
