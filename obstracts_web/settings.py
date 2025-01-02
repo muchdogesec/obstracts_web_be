@@ -549,10 +549,21 @@ ARANGODB_HOST_URL = env('ARANGODB_HOST_URL')
 ARANGODB_USERNAME = env('ARANGODB_USERNAME')
 ARANGODB_PASSWORD = env('ARANGODB_PASSWORD')
 ARANGO_TAXII_SETTINGS = {
-    'FILTER_COLLECTIONS': 'apps.utils.arango_taxii_server.filter_collections',
-    'FILTER_API_ROOTS': 'apps.utils.arango_taxii_server.filter_api_roots',
-    'PERMISSION_CLASSES': ('apps.utils.arango_taxii_server.Authenticated',),
-    'ARANGO_AUTH_FUNCTION': 'apps.utils.arango_taxii_server.get_arango_auth',
-    'ARANGODB_HOST_URL': ARANGODB_HOST_URL,
-    'SUPPORT_WRITE_OPERATIONS': False,
+    "FILTER_COLLECTIONS": "apps.utils.arango_taxii_server.filter_collections",
+    "FILTER_API_ROOTS": "apps.utils.arango_taxii_server.filter_api_roots",
+    "PERMISSION_CLASSES": ("apps.utils.arango_taxii_server.Authenticated",),
+    "ARANGO_AUTH_FUNCTION": "apps.utils.arango_taxii_server.get_arango_auth",
+    "ARANGODB_HOST_URL": ARANGODB_HOST_URL,
+    "SUPPORT_WRITE_OPERATIONS": False,
+    "AUTHENTICATION_CLASSES": [],
+    "SPECTACULAR_KWARGS": {
+        "SECURITY": [
+            {"team_api_key": []},
+        ],
+        "APPEND_COMPONENTS": {
+            "securitySchemes": {
+                "team_api_key": {"type": "apiKey", "in": "header", "name": "API-KEY"}
+            }
+        },
+    },
 }

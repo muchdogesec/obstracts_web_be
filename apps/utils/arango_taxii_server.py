@@ -8,7 +8,12 @@ from  apps.teams.models import Team
 
 API_ROOTS = ["obstracts_database"]
 def filter_api_roots(view: APIView, api_roots: list[str]):
-    return API_ROOTS
+    roots = []
+    for api_root in api_roots:
+        root = [part for part in api_root.split('/') if part][-1]
+        if root in API_ROOTS:
+            roots.append(api_root)
+    return roots
 
 def filter_collections(view: APIView, collections: list[dict]):
     feeds: list[Feed] = view.request.team.feeds.all()
@@ -27,7 +32,7 @@ def filter_collections(view: APIView, collections: list[dict]):
     return retval
 
 
-class Authenticated(permissions.IsAuthenticated):
+class Authenticated(permissions.HasTeamApiKey):
     """
     Allows access only to authenticated users.
     """
