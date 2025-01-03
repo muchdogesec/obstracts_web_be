@@ -13,6 +13,8 @@ from .views import (
     TeamTokenFeedViewSet,
     PostsByExtractionView,
     LatestPostView,
+    ObjectProxyView,
+    ObjectsProxyView,
 )
 
 
@@ -36,6 +38,8 @@ urlpatterns = router.urls + [
     path("proxy/teams/<str:team_id>/feeds/<str:feed_id>/<path:path>", TeamFeedProxyView.as_view(), name="proxy"),
     path("proxy/<path:path>", ProxyView.as_view(), name="proxy"),
     path("api/v1/feeds/<uuid:feed_id>/<path:path>", FeedProxyView.as_view(), name="proxy"),
+    path("api/v1/objects/<path:path>", ObjectsProxyView.as_view(), name="objects-proxy"),
+    path("api/v1/object/<str:object_id>", ObjectProxyView.as_view(), name="objects-proxy"),
     path("api/v1/feeds/", include(api_router.urls), name="team-feeds"),
     path('api/schema/schema-json', SchemaView.as_view(), name='schema-json'),
     path(
