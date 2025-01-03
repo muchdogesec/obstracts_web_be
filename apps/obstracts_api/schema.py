@@ -4,12 +4,15 @@ from django.views import View
 import os
 from importlib import import_module
 from collections import namedtuple
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_spectacular.settings import patched_settings, spectacular_settings
 from drf_spectacular.renderers import (
     OpenApiJsonRenderer, OpenApiJsonRenderer2, OpenApiYamlRenderer, OpenApiYamlRenderer2,
 )
+from drf_spectacular.views import SpectacularSwaggerView
 
 
 def merge_components(comp1, comp2):
@@ -123,7 +126,7 @@ class SchemaView(APIView):
                 self.urlconf = ModuleWrapper(tuple(self.urlconf))
         api_schema = self._get_schema_response(request)
 
-        schema_path = os.path.join('templates', 'obstracts_api', 'schema.json')
+        schema_path = self.get_schema_path()
         with open(schema_path) as schema_file:
             obstracts_schema = json.load(schema_file)
 
@@ -167,6 +170,9 @@ class SchemaView(APIView):
         merged_components['schemas'] = new_schema_dict
         return JsonResponse(merged_swagger)
 
+    def get_schema_path(self):
+        os.path.join('templates', 'obstracts_api', 'schema.json')
+
     def _get_schema_response(self, request):
         # version specified as parameter to the view always takes precedence. after
         # that we try to source version through the schema view's own versioning_class.
@@ -196,3 +202,17 @@ class SchemaView(APIView):
 
     def _get_version_parameter(self, request):
         return None
+
+class AdminSchemaView(SchemaView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
+    def resolve_schemas(self, merged_swagger):
+        pass
+
+    def get_schema_path(self):
+        return os.path.join('templates', 'obstracts_api', 'admin-schema.json')
+
+
+class AdminSwaggerView(SpectacularSwaggerView):
+    permission_classes = [IsAdminUser]

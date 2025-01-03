@@ -4,6 +4,7 @@ from drf_spectacular.views import SpectacularSwaggerView
 
 from .schema import SchemaView
 from .views import (
+    AdminProxyView,
     ProxyView,
     FeedViewSet,
     FeedProxyView,
@@ -28,6 +29,7 @@ api_router.register('', TeamTokenFeedViewSet, basename='team-token-feeds')
 
 urlpatterns = router.urls + [
     path("team/<str:team_id>/", include(team_router.urls), name="team_feeds"),
+    path("admin/api/v1/<path:path>", AdminProxyView.as_view(), name="admin-proxy"),
     path("proxy/open/feeds/<uuid:feed_id>/posts/", OpenFeedProxyView.as_view(), name=""),
     path("proxy/open/feeds/<uuid:feed_id>/posts/<uuid:post_id>/", OpenFeedProxyView.as_view(), name=""),
     path("proxy/open/feeds/<uuid:feed_id>/posts/<uuid:post_id>/markdown/", OpenFeedProxyView.as_view(), name=""),
