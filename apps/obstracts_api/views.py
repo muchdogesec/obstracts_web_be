@@ -431,6 +431,90 @@ class FeedProxyView(View):
             self.response = self.finalize_response(request, response, *args, **kwargs)
             return self.response
 
+class ObjectsProxyView(View):
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            if not IsAuthenticated().has_permission(self.request, self):
+                raise PermissionDenied()
+            # Modify the target URL as needed
+            target_url = (
+                f"{settings.OBSTRACT_SERVICE_API}/objects/{kwargs['path']}"
+            )
+            if request.method != "GET":
+                raise MethodNotAllowed()
+
+            # Forward the request to the target URL
+            response = requests.request(
+                method="GET",
+                url=target_url,
+                headers={
+                    key: value
+                    for key, value in request.headers.items()
+                    if key != "Host"
+                },
+                data=request.body,
+                params={key: value for key, value in request.GET.items()},
+                allow_redirects=False,
+            )
+
+            # Return the response to the original request
+            return HttpResponse(
+                response.content,
+                status=response.status_code,
+                content_type=response.headers.get("Content-Type"),
+            )
+        except PermissionDenied:
+            return HttpResponse(
+                {},
+                status=401,
+            )
+        except Exception as exc:
+            response = self.handle_exception(exc)
+            self.response = self.finalize_response(request, response, *args, **kwargs)
+            return self.response
+
+class ObjectProxyView(View):
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            if not IsAuthenticated().has_permission(self.request, self):
+                raise PermissionDenied()
+            # Modify the target URL as needed
+            target_url = (
+                f"{settings.OBSTRACT_SERVICE_API}/object/{kwargs['object_id']}"
+            )
+            if request.method != "GET":
+                raise MethodNotAllowed()
+
+            # Forward the request to the target URL
+            response = requests.request(
+                method="GET",
+                url=target_url,
+                headers={
+                    key: value
+                    for key, value in request.headers.items()
+                    if key != "Host"
+                },
+                data=request.body,
+                params={key: value for key, value in request.GET.items()},
+                allow_redirects=False,
+            )
+
+            # Return the response to the original request
+            return HttpResponse(
+                response.content,
+                status=response.status_code,
+                content_type=response.headers.get("Content-Type"),
+            )
+        except PermissionDenied:
+            return HttpResponse(
+                {},
+                status=401,
+            )
+        except Exception as exc:
+            response = self.handle_exception(exc)
+            self.response = self.finalize_response(request, response, *args, **kwargs)
+            return self.response
+
 
 class TeamFeedProxyView(APIView):
     def dispatch(self, request, *args, **kwargs):

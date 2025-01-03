@@ -12,11 +12,22 @@ OBSTRACT_SERVICE_BASE_URL = settings.OBSTRACT_SERVICE_BASE_URL
 
 class Command(BaseCommand):
     
+    def filter_path(self, path):
+        if "get" not in path[1]:
+            return False
+        if 'feed_id' in path[0]:
+            return True
+        if '/objects/'in path[0] and "reports" not in path[0]:
+            return True
+        if '/object/'in path[0] and "reports" not in path[0]:
+            return True
+        return False
+    
     def handle(self, *args, **kwargs):
         res = requests.get(OBSTRACT_SERVICE_BASE_URL + '/api/schema/')
         data_json = yaml.safe_load(res.text)
         path_items = data_json["paths"].items()
-        filtered_paths = list(filter(lambda item: 'feed_id' in item[0] and "get" in item[1], path_items))
+        filtered_paths = list(filter(lambda item: self.filter_path(item), path_items))
         path_dict = {}
         security_requirement = [{'api_key': []}]
         for key, value in filtered_paths:
