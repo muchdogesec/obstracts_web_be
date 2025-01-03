@@ -74,10 +74,17 @@ def get_obstracts_feed(feed_id):
 def init_reload_feed(profile_id, feed_id):
     data = {
         "profile_id": str(profile_id),
-        "include_remote_blogs": False,
     }
     response = requests.patch(
         OBSTRACT_SERVICE_API + f"/feeds/{feed_id}/fetch/",
+        json=data,
+    )
+    response.raise_for_status
+    return response.json()
+
+def update_feed(feed_id, data):
+    response = requests.patch(
+        OBSTRACT_SERVICE_API + f"/feeds/{feed_id}/",
         json=data,
     )
     response.raise_for_status()

@@ -9,6 +9,7 @@ from django.views import View
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, response, status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import action
 from rest_framework.exceptions import (
     MethodNotAllowed,
@@ -35,6 +36,7 @@ from .models import Feed, FeedSubsription
 from .pagination import CustomPagination
 from .serializers import (
     FeedSerializer,
+    FeedUpdateSerializer,
     SubscribedFeedSerializer,
     SkeletonFeedSerializer,
     FeedWithSubscriptionSerializer,
@@ -92,6 +94,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size = 100
     page_size_query_param = "page_size"
     max_page_size = 10000
+
 
 
 class FeedViewSet(
@@ -160,6 +163,15 @@ class FeedViewSet(
         feed = self.get_object()
         delete_obstracts_feed(feed.obstract_feed_metadata["id"])
         feed.delete()
+
+    def get_serializer_class(self):
+        if self.action in ['partial_update', 'update']:
+            return FeedUpdateSerializer
+        return FeedSerializer
+
+    @action(detail=True, methods=['PATCH'])
+    def reload_feed(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
     @action(detail=False, methods=['POST'])
     def skeleton(self, *args, **kwargs):
